@@ -1,0 +1,120 @@
+pipeline 
+{
+    agent any
+
+    environment 
+    {
+        email = 's223116943@deakin.edu.au'
+    }
+
+    stages 
+    {
+        stage('Build') 
+        {
+            steps 
+            {
+                script 
+                {
+                    echo 'Stage 1: Build'
+                    echo 'Build the code using Maven'
+                }
+            }
+        }
+
+        stage('Unit and Integration Tests') 
+        {
+            steps 
+            {
+                script 
+                {
+                    echo 'Stage 2: Unit and Integration Tests'
+                    echo 'Run unit tests using JUnit and integration tests using TestNG'
+                }
+            }
+        }
+
+        stage('Code Analysis') 
+        {
+            steps 
+            {
+                script 
+                {
+                    echo 'Stage 3: Code Analysis'
+                    echo 'Analyze the code using SonarQube'
+                }
+            }
+        }
+
+        stage('Security Scan') 
+        {
+            steps 
+            {
+                script 
+                {
+                    echo 'Stage 4: Security Scan'
+                    echo 'Perform a security scan using OWASP Dependency Check'
+                }
+            }
+        }
+
+        stage('Deploy to Staging') 
+        {
+            steps 
+            {
+                script 
+                {
+                    echo 'Stage 5: Deploy to Staging'
+                    echo 'Deploy the application to a staging server using AWS EC2'
+                }
+            }
+        }
+
+        stage('Integration Tests on Staging') 
+        {
+            steps 
+            {
+                script 
+                {
+                    echo 'Stage 6: Integration Tests on Staging'
+                    echo 'Run integration tests on the staging environment using Selenium'
+                }
+            }
+        }
+
+        stage('Deploy to Production') 
+        {
+            steps 
+            {
+                script 
+                {
+                    echo 'Stage 7: Deploy to Production'
+                    echo 'Deploy the application to a production server using AWS EC2'
+                }
+            }
+        }
+    }
+
+    post 
+    {
+        success 
+        {
+            emailext
+            (
+                subject: "SUCCESS: Build ${env.JOB_NAME} ${env.BUILD_NUMBER}",
+                body: "Build successful! Check the Jenkins job for details: ${env.BUILD_URL}",
+                to: "${env.email}"
+            )
+        }
+
+        failure 
+        {
+            emailext
+            (
+                subject: "FAILURE: Build ${env.JOB_NAME} ${env.BUILD_NUMBER}",
+                body: "Build failed! Check the Jenkins job for details: ${env.BUILD_URL}",
+                to: "${env.email}",
+                attachLog: true
+            )
+        }
+    }
+}
