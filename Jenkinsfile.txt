@@ -4,7 +4,7 @@ pipeline
 
     environment 
     {
-        email = 's223116943@deakin.edu.au'
+        email = 'anushka.m.bhojne@gmail.com'
     }
 
     stages 
@@ -93,28 +93,17 @@ pipeline
             }
         }
     }
-
+    
     post 
     {
         success 
         {
-            emailext
-            (
-                subject: "SUCCESS: Build ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-                body: "Build successful! Check the Jenkins job for details: ${env.BUILD_URL}",
-                to: "${env.email}"
-            )
+            emailext(subject: "SUCCESS: Build ${env.JOB_NAME} ${env.BUILD_NUMBER}", body: "Build successful! Check the Jenkins job for details: ${env.BUILD_URL}", to: "${env.email}")
         }
 
         failure 
         {
-            emailext
-            (
-                subject: "FAILURE: Build ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-                body: "Build failed! Check the Jenkins job for details: ${env.BUILD_URL}",
-                to: "${env.email}",
-                attachLog: true
-            )
+            emailext(subject: "FAILURE: Build ${env.JOB_NAME} ${env.BUILD_NUMBER}", body: "Build failed! Check the Jenkins job for details: ${env.BUILD_URL}", to: "${env.email}", attachLog: true)
         }
     }
 }
